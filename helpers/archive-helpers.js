@@ -9,7 +9,7 @@ var _ = require('underscore');
  * customize it in any way you wish.
  */
 
-exports.paths = {
+exports.paths = { //__dirname is the working directory this file resides in.
   siteAssets: path.join(__dirname, '../web/public'),
   archivedSites: path.join(__dirname, '../archives/sites'),
   list: path.join(__dirname, '../archives/sites.txt')

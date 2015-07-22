@@ -2,10 +2,34 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="styles.css" />
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script>console.log("page has reloaded");</script>
 </head>
 <body>
-  Enter a URL here:
-  <form method="POST">
+  <script>
+    $(document).ready(function(){
+      $('form').on("submit", function(e){
+        e.preventDefault();
+        console.log($(this).children().val() + "should be in the form");
+        var $data = $(this).children().val();
+        console.log($(this).children().val() + "was in the form");
+        $.ajax({
+          url: 'http://127.0.0.1:8080',
+          type: 'POST',
+          data: $data,
+          contentType: 'text/plain',
+          success: function (data) {
+            console.log("url: " + data + " has been sent!");
+          },
+          error: function (data) {
+            console.error('we fucked up');
+          }
+        });
+      });
+    });
+  </script>
+  <h1>Enter a URL here:</h1>
+  <form method="POST" id="URLsubmit">
     <input type="input" name="url"></input>
   </form>
 </body>

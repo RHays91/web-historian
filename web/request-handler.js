@@ -1,6 +1,7 @@
 var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var fs = require('fs');
+var helpers = require('./http-helpers.js');
 // require more modules/folders here!
 
 var defaultCorsHeaders = {
@@ -30,22 +31,11 @@ var actions = {
   },
   "GET": function(req, res){
     if (req.url === "/"){
-      var site = process.cwd() + "/public/index.html";
-      console.log(site);
-      fs.readFile(site, function(err, data){
-        if (err){
-          console.log("we fucked up again");
-        } else {
-          headers['Content-Type'] = "text/html";
-          res.writeHead(200, headers);
-          res.write(data);
-          res.end();
-        }
-      });
+      helpers.serveAssets(res, "/public/index.html");
     } else {
-    // res.write();
-      res.writeHead(404, headers);
-      res.end('404');
+      headers['Content-Type'] = "text/plain";
+      res.writeHead(200, headers);
+      res.end(data);
     }
   },
   "OPTIONS": function(req, res){

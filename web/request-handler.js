@@ -2,18 +2,41 @@ var path = require('path');
 var archive = require('../helpers/archive-helpers');
 // require more modules/folders here!
 
+var actions = {
+  "POST": function(req, res){
+    res.writeHead(201, defaultCorsHeaders);
+
+    var dataString = "";
+
+    req.on('data', function(chunk){
+      dataString = dataString + chunk;
+    });
+
+
+    req.on('end', function(){
+      console.log("received request " + req.method);
+      res.end(dataString);
+    })
+  },
+  "GET": function(req, res){
+    res.writeHead(200, defaultCorsHeaders);
+    console.log("received request " + req.method);
+    // res.write();
+    res.end();
+  },
+  "OPTIONS": function(req, res){
+    res.writeHead(200, defaultCorsHeaders);
+    console.log("received request " + req.method);
+    res.end();
+  }
+}
+
 exports.handleRequest = function (req, res) {
-  res.writeHead(201, defaultCorsHeaders);
-
-  var dataString = "";
-
-  req.on('data', function(chunk){
-    dataString = dataString + chunk;
-  });
-
-  request.on('end', function(){
-    res.end(dataString);
-  })
+  var action = req.method;
+  
+  if (actions[action]){
+    actions[action](req, res);
+  }
 };
 
 var defaultCorsHeaders = {

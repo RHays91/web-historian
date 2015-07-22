@@ -1,6 +1,16 @@
 var path = require('path');
 var archive = require('../helpers/archive-helpers');
+var fs = require('fs');
 // require more modules/folders here!
+
+var defaultCorsHeaders = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "access-control-allow-headers": "content-type, accept",
+  "access-control-max-age": 10 // Seconds.
+};
+
+var headers = defaultCorsHeaders;
 
 var actions = {
   "POST": function(req, res){
@@ -19,10 +29,24 @@ var actions = {
     })
   },
   "GET": function(req, res){
-    res.writeHead(200, defaultCorsHeaders);
-    console.log("received request " + req.method);
+    if (req.url === "/"){
+      var site = process.cwd() + "/public/index.html";
+      console.log(site);
+      fs.readFile(site, function(err, data){
+        if (err){
+          console.log("we fucked up again");
+        } else {
+          headers['Content-Type'] = "text/html";
+          res.writeHead(200, headers);
+          res.write(data);
+          res.end();
+        }
+      });
+    } else {
     // res.write();
-    res.end();
+      res.writeHead(404, headers);
+      res.end('404');
+    }
   },
   "OPTIONS": function(req, res){
     res.writeHead(200, defaultCorsHeaders);
@@ -40,7 +64,6 @@ exports.handleRequest = function (req, res) {
 };
 
 var defaultCorsHeaders = {
-  "Content-Type": "text/plain",
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",

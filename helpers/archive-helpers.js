@@ -41,36 +41,28 @@ exports.isUrlInList = function(target, callback){
   exports.readListOfUrls(function(data){
     callback(data.indexOf(target) > -1)
   });
-
-  // var listOfUrlsArray = exports.readListOfUrls().split("\n");
-  // if (listOfUrlsArray.indexOf(target) !== -1){
-  //   console.log("the URL is in the list");
-  //   return true;
-  // }
-  // return false;
 };
 
 exports.addUrlToList = function(data, callback){
-  ///Users/student/2015-06-web-historian/helpers../web/archives/sites/someurl.com'
-  if (!exports.isUrlInList(data)){
-    fs.appendFile(exports.paths.list, (data + '\n'), function(err){
-      if (err) throw err;
-      console.log("URL has been added to list");
-    });
-  }
-  var newDir = __dirname + "/../web/archives/sites/" + data;
-  console.log(newDir + " is the directory we want to write...");
-  if(!exports.isUrlArchived(newDir)){
-    exports.downloadUrls(newDir);
-  }
+  exports.isUrlInList(data, function(is){
+    if (!is){
+      fs.appendFile(exports.paths.list, (data + '\n'), function(err){
+        if (err) {throw err};
+        callback();
+      });
+    }
+  });
 };
 
-exports.isUrlArchived = function(dir){
-  if (!fs.existsSync(dir)){
-    // fs.writeFileSync(dir);
-    return false; //should this even create the file, or should that be handled by downloadUrls?
-  }
-  return true;
+exports.isUrlArchived = function(target, callback){
+  fs.exists(exports.paths.archivedSites + "/" + target, function(is){
+    callback(is);
+  });
+  // if (!fs.existsSync(dir)){
+  //   // fs.writeFileSync(dir);
+  //   return false; //should this even create the file, or should that be handled by downloadUrls?
+  // }
+  // return true;
 };
 
 exports.downloadUrls = function(dir){

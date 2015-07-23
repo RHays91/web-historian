@@ -15,7 +15,7 @@ var headers = defaultCorsHeaders;
 
 var actions = {
   "POST": function(req, res){
-    res.writeHead(201, defaultCorsHeaders);
+    res.writeHead(302, defaultCorsHeaders);
 
     var dataString = "";
 

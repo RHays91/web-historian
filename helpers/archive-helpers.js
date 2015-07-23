@@ -39,13 +39,20 @@ exports.isUrlInList = function(target){
   exports.readListOfUrls();
   var listOfUrlsArray = listOfUrls.split("\n");
   if (listOfUrlsArray.indexOf(target) !== -1){
+    console.log("the URL is in the list");
     return true;
   }
   return false;
 };
 
 exports.addUrlToList = function(data){
-  fs.appendFile(exports.paths.list, data + "\n", function(err){
+  console.log(typeof data + " is our initial typeof data...");
+  var data = JSON.parse(data);
+  console.log(typeof data + " is our new typeof data...");
+  console.log(data);
+  console.log("is our 'object'...")
+  var url = data['url'];
+  fs.appendFile(exports.paths.list, url + '\n', function(err){
     if (err) throw err;
     console.log("URL has been added to list");
   })

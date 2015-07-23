@@ -26,12 +26,14 @@ var actions = {
 
     req.on('end', function(){
       console.log("received request " + req.method);
+      // post should save submitted url's in archives/sites.txt
+      archive.addUrlToList(dataString);
       res.end(dataString);
     })
   },
   "GET": function(req, res){
     if (req.url === "/"){
-      helpers.serveAssets(res, "/public/index.html");
+      helpers.serveAssets(res, "/index.html");
     } else {
       headers['Content-Type'] = "text/plain";
       res.writeHead(200, headers);

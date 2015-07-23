@@ -2,6 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
 
+var listOfUrls;
+
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
  * Consider using the `paths` object below to store frequently used file paths. This way,
@@ -26,12 +28,27 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(){
+  fs.readFile(exports.paths.list, function(err, data){
+    if (err) throw err;
+    // console.log(data.toString());
+    listOfUrls = data.toString();
+  });
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(target){
+  exports.readListOfUrls();
+  var listOfUrlsArray = listOfUrls.split("\n");
+  if (listOfUrlsArray.indexOf(target) !== -1){
+    return true;
+  }
+  return false;
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(data){
+  fs.appendFile(exports.paths.list, data + "\n", function(err){
+    if (err) throw err;
+    console.log("URL has been added to list");
+  })
 };
 
 exports.isUrlArchived = function(){

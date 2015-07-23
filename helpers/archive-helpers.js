@@ -38,12 +38,16 @@ exports.readListOfUrls = function(callback){ //does this have a test associated 
 };
 
 exports.isUrlInList = function(target, callback){
-  var listOfUrlsArray = exports.readListOfUrls().split("\n");
-  if (listOfUrlsArray.indexOf(target) !== -1){
-    console.log("the URL is in the list");
-    return true;
-  }
-  return false;
+  exports.readListOfUrls(function(data){
+    callback(data.indexOf(target) > -1)
+  });
+
+  // var listOfUrlsArray = exports.readListOfUrls().split("\n");
+  // if (listOfUrlsArray.indexOf(target) !== -1){
+  //   console.log("the URL is in the list");
+  //   return true;
+  // }
+  // return false;
 };
 
 exports.addUrlToList = function(data, callback){

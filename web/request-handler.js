@@ -23,8 +23,10 @@ var actions = {
       dataString = dataString + chunk;
     });
 
-
     req.on('end', function(){
+      dataString = JSON.parse(dataString);
+      dataString = dataString['url'];
+      console.log(dataString + "dataString in POST request");
       console.log("received request " + req.method);
       // post should save submitted url's in archives/sites.txt
       archive.addUrlToList(dataString);

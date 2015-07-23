@@ -25,13 +25,19 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){ //does this have a test associated with it? if so, what does it want???
-  var listOfUrls = fs.readFileSync(exports.paths.list).toString();
-  console.log(listOfUrls + "is our list of Urls...")
-  return listOfUrls;
+exports.readListOfUrls = function(callback){ //does this have a test associated with it? if so, what does it want???
+  fs.readFile(exports.paths.list, {encoding: 'utf8'}, function(err, data){
+    // completeData = JSON.parse(data);
+    if (err){throw err};
+    console.log(data + "is our read data");
+    console.log(typeof data);
+    callback(data.split('\n'));
+  });
+
+  // console.log(listOfUrls + "is our list of Urls...")
 };
 
-exports.isUrlInList = function(target){
+exports.isUrlInList = function(target, callback){
   var listOfUrlsArray = exports.readListOfUrls().split("\n");
   if (listOfUrlsArray.indexOf(target) !== -1){
     console.log("the URL is in the list");
@@ -40,7 +46,7 @@ exports.isUrlInList = function(target){
   return false;
 };
 
-exports.addUrlToList = function(data){
+exports.addUrlToList = function(data, callback){
   ///Users/student/2015-06-web-historian/helpers../web/archives/sites/someurl.com'
   if (!exports.isUrlInList(data)){
     fs.appendFile(exports.paths.list, (data + '\n'), function(err){
@@ -50,13 +56,19 @@ exports.addUrlToList = function(data){
   }
   var newDir = __dirname + "/../web/archives/sites/" + data;
   console.log(newDir + " is the directory we want to write...");
-  if (!fs.existsSync(newDir)){
-    fs.writeFileSync(newDir);
+  if(!exports.isUrlArchived(newDir)){
+    exports.downloadUrls(newDir);
   }
 };
 
-exports.isUrlArchived = function(){
+exports.isUrlArchived = function(dir){
+  if (!fs.existsSync(dir)){
+    // fs.writeFileSync(dir);
+    return false; //should this even create the file, or should that be handled by downloadUrls?
+  }
+  return true;
 };
 
-exports.downloadUrls = function(){
+exports.downloadUrls = function(dir){
+  fs.writeFileSync(dir);
 };

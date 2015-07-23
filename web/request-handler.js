@@ -35,8 +35,14 @@ var actions = {
   },
   "GET": function(req, res){
     if (req.url === "/"){
-      helpers.serveAssets(res, "/index.html");
-    } else {
+      helpers.serveAssets(res, "/index.html", archive.paths['siteAssets']);
+    }else if(archive.isUrlArchived(archive.paths.archivedSites + req.url)){
+      console.log("we found " + archive.paths.archivedSites + "!");
+      // helpers.serveassets(res, "/")
+
+      //here, we must check archive for file that is req.url
+      //if true, return the content of that file
+    }else{
       headers['Content-Type'] = "text/plain";
       res.writeHead(200, headers);
       res.end(data);
@@ -54,6 +60,8 @@ exports.handleRequest = function (req, res) {
   
   if (actions[action]){
     actions[action](req, res);
+  } else {
+
   }
 };
 

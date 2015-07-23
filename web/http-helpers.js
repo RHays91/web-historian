@@ -21,8 +21,8 @@ exports.contentTypes = {
   ".jpg": "image/jpg"
 };
 
-exports.serveAssets = function(res, asset, callback) { //res, asset, callback
-  var site = archive.paths['siteAssets'] + asset;
+exports.serveAssets = function(res, asset, pathname) { //res, asset, callback
+  var site = pathname + asset;
   fs.readFile(site, function(err, data){
     if (err){
       console.log("something went wrong");
@@ -39,6 +39,10 @@ exports.serveAssets = function(res, asset, callback) { //res, asset, callback
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
 };
+
+exports.serveArchivedSite = function(res, asset){
+
+}
 
 
 

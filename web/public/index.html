@@ -13,6 +13,9 @@
         console.log($(this).children().val() + " should be in the form");
         var $data = $(this).children().val();
         console.log($(this).children().val() + " was in the form");
+        $data = {
+          url:$data
+        };
         $.ajax({
           url: 'http://127.0.0.1:8080',
           type: 'POST',
@@ -22,7 +25,7 @@
             console.log("url: " + data + " has been sent!");
           },
           error: function (data) {
-            console.error('we fucked up');
+            console.error(data + ' was transferred, but we STILL fucked up');
           }
         });
       });
@@ -30,7 +33,7 @@
   </script>
   <h1>Enter a URL here:</h1>
   <form method="POST" id="URLsubmit">
-    <input type="input" name="url"></input>
+    <input type="input" name="urlz"></input>
   </form>
 </body>
 </html>

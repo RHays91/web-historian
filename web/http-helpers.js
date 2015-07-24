@@ -28,16 +28,10 @@ exports.serveAssets = function(res, asset, pathname) { //res, asset, callback
       console.log("something went wrong");
     }
     headers['Content-Type'] = exports.contentTypes[path.extname(asset)];
-    console.log(headers['Content-Type']+ " is the content type!!!");
     res.writeHead(200, headers);
     res.write(data);
-    // res.write(data);
     res.end();
   });
-
-  // Write some code here that helps serve up your static files!
-  // (Static files are things like html (yours or archived from others...),
-  // css, or anything that doesn't change often.)
 };
 
 exports.serveArchivedSite = function(res, asset){

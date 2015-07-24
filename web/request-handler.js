@@ -26,15 +26,13 @@ var actions = {
     req.on('end', function(){
       //TODO:
       //redirect to loading screen; serve asset upon completion
-      console.log(dataString + "dataString in POST request pre-parse");
       dataString = JSON.parse(dataString);
       dataString = dataString['url'];
-      console.log("received request " + req.method);
       // post should save submitted url's in archives/sites.txt
       archive.addUrlToList(dataString, function(){
-        res.end(dataString);
+        res.end();
       });
-    })
+    });
   },
   "GET": function(req, res){
     var fileName = req.url.substring(1);
@@ -64,8 +62,6 @@ exports.handleRequest = function (req, res) {
   
   if (actions[action]){
     actions[action](req, res);
-  } else {
-
   }
 };
 

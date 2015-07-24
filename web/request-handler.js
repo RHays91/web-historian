@@ -20,19 +20,20 @@ var actions = {
     var dataString = "";
 
     req.on('data', function(chunk){
-      dataString = dataString + chunk;
+      dataString += chunk;
     });
 
     req.on('end', function(){
       //TODO:
       //redirect to loading screen; serve asset upon completion
+      console.log(dataString + "dataString in POST request pre-parse");
       dataString = JSON.parse(dataString);
       dataString = dataString['url'];
-      console.log(dataString + "dataString in POST request");
       console.log("received request " + req.method);
       // post should save submitted url's in archives/sites.txt
-      archive.addUrlToList(dataString);
-      res.end(dataString);
+      archive.addUrlToList(dataString, function(){
+        res.end(dataString);
+      });
     })
   },
   "GET": function(req, res){

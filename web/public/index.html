@@ -10,14 +10,14 @@
     $(document).ready(function(){
       $('form').on("submit", function(e){
         e.preventDefault();
-        console.log($(this).children().val() + "should be in the form");
+        console.log($(this).children().val() + " should be in the form");
         var $data = $(this).children().val();
-        console.log($(this).children().val() + "was in the form");
+        console.log($(this).children().val() + " was in the form");
         $.ajax({
           url: 'http://127.0.0.1:8080',
           type: 'POST',
-          data: $data,
-          contentType: 'text/plain',
+          data: JSON.stringify($data),
+          contentType: 'application/json',
           success: function (data) {
             console.log("url: " + data + " has been sent!");
           },

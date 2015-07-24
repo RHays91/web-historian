@@ -27,14 +27,9 @@ exports.initialize = function(pathsObj){
 
 exports.readListOfUrls = function(callback){ //does this have a test associated with it? if so, what does it want???
   fs.readFile(exports.paths.list, {encoding: 'utf8'}, function(err, data){
-    // completeData = JSON.parse(data);
     if (err){throw err};
-    console.log(data + "is our read data");
-    console.log(typeof data);
     callback(data.split('\n'));
   });
-
-  // console.log(listOfUrls + "is our list of Urls...")
 };
 
 exports.isUrlInList = function(target, callback){
@@ -68,7 +63,6 @@ exports.downloadUrls = function(data){
           return res.code;
         }),
         function(err, stuff){
-          //finish the error handling callback
           if (err) {throw err};
           console.log(site + "was written");
         });

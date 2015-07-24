@@ -24,6 +24,8 @@ var actions = {
     });
 
     req.on('end', function(){
+      //TODO:
+      //redirect to loading screen; serve asset upon completion
       dataString = JSON.parse(dataString);
       dataString = dataString['url'];
       console.log(dataString + "dataString in POST request");
@@ -34,18 +36,19 @@ var actions = {
     })
   },
   "GET": function(req, res){
+    var fileName = req.url.substring(1);
     if (req.url === "/"){
       helpers.serveAssets(res, "/index.html", archive.paths['siteAssets']);
-    }else if(archive.isUrlArchived(archive.paths.archivedSites + req.url)){
-      console.log("we found " + archive.paths.archivedSites + "!");
-      // helpers.serveassets(res, "/")
-
-      //here, we must check archive for file that is req.url
-      //if true, return the content of that file
-    }else{
-      headers['Content-Type'] = "text/plain";
-      res.writeHead(200, headers);
-      res.end(data);
+    }else {
+      archive.isUrlArchived(fileName, function(is){
+        if (is) {
+        helpers.serveAssets(res, req.url, archive.paths['archivedSites']);
+        } else {
+          headers['Content-Type'] = "text/plain";
+          res.writeHead(404, headers);
+          res.end();
+        }
+      });
     }
   },
   "OPTIONS": function(req, res){
